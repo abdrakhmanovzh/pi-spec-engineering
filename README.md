@@ -6,26 +6,9 @@ The repository is intentionally built as a collection of independent agent skill
 
 ## Workflow
 
-```mermaid
-flowchart TD
-    R[requirements.md] --> TI["/to-intent"]
-    TI --> I[intent.md]
-    I --> TC["/to-contract"]
-    TC --> C[contract.md]
-    C --> IM["/implement"]
-    IM --> RV["/review"]
+![Hand-drawn workflow diagram](docs/diagrams/workflow.svg)
 
-    RV -->|Changes required| FR["/fix-review"]
-    FR --> RV
-
-    RV -->|Pass| V["/verify"]
-    V -->|Implementation or evidence failure| FR
-    V -->|Contract mismatch| D{Reconsider contract?}
-    D -->|User approves| TC
-    D -->|No| STOP[Stop]
-    V -->|Pass| F["/finalize"]
-    F --> DONE[Completion record, durable truth, and approved cleanup]
-```
+[Edit the tldraw source](docs/diagrams/workflow.tldraw).
 
 Arrows between skills show the recommended next step, not automatic invocation. Each skill reports and waits for the user.
 
@@ -68,22 +51,9 @@ A completed change contains three kinds of information:
 
 The intended completion flow is:
 
-```mermaid
-flowchart TD
-    W[Working artifacts] --> V["/verify"]
-    V --> P[Completion package]
-    P --> F["/finalize"]
+![Hand-drawn artifact lifecycle diagram](docs/diagrams/artifact-lifecycle.svg)
 
-    F --> H[Historical reasoning]
-    F --> T[Current system truth]
-    F --> X[Temporary remainder]
-
-    H --> DEST[Issue, pull request, or local archive]
-    T --> DURABLE[Code, tests, schemas, and durable docs]
-    X --> APPROVAL{User approves exact files?}
-    APPROVAL -->|Yes| DELETE[Delete approved files]
-    APPROVAL -->|No| KEEP[Keep files]
-```
+[Edit the tldraw source](docs/diagrams/artifact-lifecycle.tldraw).
 
 ### Tracker integration
 
@@ -187,18 +157,9 @@ It:
 
 These stages answer different questions:
 
-```mermaid
-flowchart LR
-    I[intent.md] --> V["/verify"]
-    C[contract.md] --> R["/review"]
-    C --> V
-    CODE[Implementation] --> R
-    CODE --> V
+![Hand-drawn comparison of review and verification](docs/diagrams/review-vs-verify.svg)
 
-    R --> MATCH[Does the code match the contract?]
-    R --> QUALITY[Is the code solid?]
-    V --> OUTCOME[Does the working system deliver the intent?]
-```
+[Edit the tldraw source](docs/diagrams/review-vs-verify.tldraw).
 
 ### `/review`
 
