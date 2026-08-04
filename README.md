@@ -22,7 +22,7 @@ verified change
 published completion record + durable system truth
 ```
 
-`/to-intent` and `/to-contract` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
+`/to-intent`, `/to-contract`, and `/implement` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
 
 ## Artifact model
 
@@ -131,6 +131,21 @@ It:
 
 By default, `contract.md` is written beside the supplied `intent.md`.
 
+### `/implement`
+
+Consumes an approved `contract.md` and produces code, tests, schemas, and durable documentation that satisfy it.
+
+It:
+
+- validates the contract against the repository before editing
+- implements observable behavior in small vertical slices
+- adds or reuses evidence at existing public boundaries
+- uses TDD when it provides a useful feedback loop rather than mandating it
+- runs focused checks throughout and relevant repository checks at the end
+- stops instead of silently changing an invalid contract
+- reports commitment coverage and validation results without creating another artifact
+- does not review, commit, or publish the change
+
 ## Using the skills with Pi
 
 Load the development versions directly:
@@ -138,7 +153,8 @@ Load the development versions directly:
 ```bash
 pi \
   --skill ./skills/to-intent/SKILL.md \
-  --skill ./skills/to-contract/SKILL.md
+  --skill ./skills/to-contract/SKILL.md \
+  --skill ./skills/implement/SKILL.md
 ```
 
 Then invoke the required transition explicitly:
@@ -146,6 +162,7 @@ Then invoke the required transition explicitly:
 ```text
 /skill:to-intent path/to/requirements.md
 /skill:to-contract path/to/intent.md
+/skill:implement path/to/contract.md
 ```
 
 The skills use `disable-model-invocation: true`, so they will not be selected automatically.
@@ -160,10 +177,12 @@ skills/
 │   ├── SKILL.md
 │   └── references/
 │       └── INTENT-FORMAT.md
-└── to-contract/
-    ├── SKILL.md
-    └── references/
-        └── CONTRACT-FORMAT.md
+├── to-contract/
+│   ├── SKILL.md
+│   └── references/
+│       └── CONTRACT-FORMAT.md
+└── implement/
+    └── SKILL.md
 ```
 
 Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.
