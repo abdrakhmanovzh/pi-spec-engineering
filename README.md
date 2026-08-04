@@ -22,7 +22,7 @@ verified change
 published completion record + durable system truth
 ```
 
-`/to-intent`, `/to-contract`, and `/implement` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
+`/to-intent`, `/to-contract`, `/implement`, and `/review` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
 
 ## Artifact model
 
@@ -36,17 +36,17 @@ The clarified and human-approved business outcome produced through grilling. It 
 
 ### `contract.md`
 
-The technical and verifiable commitment derived from `intent.md`. It will define boundaries such as inputs, outputs, types, errors, invariants, state transitions, and observable side effects without becoming an implementation plan.
+The technical and verifiable agreement derived from `intent.md`. It will define boundaries such as inputs, outputs, types, errors, invariants, state transitions, and observable side effects without becoming an implementation plan.
 
 ## Principles
 
-- Business intent is clarified before technical commitments are made.
+- Business intent is clarified before technical behavior is agreed.
 - Agents investigate discoverable facts and ask humans for decisions.
 - Humans approve meaning; agents implement and provide evidence.
 - Artifacts describe boundaries and outcomes, not speculative internals.
 - Skills remain independently understandable and explicitly invoked.
 - Workflow depth should be proportional to the uncertainty and risk of a change.
-- Tests, types, and runtime checks provide executable evidence for written commitments.
+- Tests, types, and runtime checks provide executable evidence for the written contract.
 - Change artifacts have an explicit lifecycle; they are not permanent repository documentation by default.
 
 ## Artifact lifecycle
@@ -87,6 +87,29 @@ Provider-specific automation can be added after a real workflow justifies it. Po
 
 This lifecycle has an unavoidable tradeoff: retaining complete historical reasoning requires a durable destination. If no tracker or local archive is chosen, that history is intentionally discarded after the lasting truths are promoted.
 
+## Execution model
+
+The pipeline is designed to run from one primary agent session. Users should not need to start a new conversation for every skill.
+
+```text
+Primary agent:       /to-intent → /to-contract → /implement
+Independent agents:  /review (contract review + code review)
+Primary agent:       /fix-review
+Independent agent:   /verify
+Primary agent:       /finalize
+```
+
+Use artifacts for explicit handoffs and resumability, not to force a new session between stages. Use subagents only where independence is valuable:
+
+- `/to-intent` and `/to-contract` stay with the primary agent because conversational continuity helps resolve decisions.
+- `/implement` stays with one primary agent to preserve implementation coherence.
+- `/review` prefers two isolated, read-only subagents so its axes cannot bias each other or inherit implementation reasoning.
+- `/fix-review` stays with the primary agent because findings may interact.
+- `/verify` should prefer an independent agent so it checks evidence rather than trusting the implementation narrative.
+- `/finalize` stays with the primary agent.
+
+When a harness does not support subagents, the skills still work sequentially in the primary session. Subagent orchestration is an independence mechanism, not a portability requirement.
+
 ## Available skills
 
 ### `/to-intent`
@@ -123,8 +146,8 @@ It:
 - identifies affected public boundaries and existing conventions
 - makes input, output, and error types concrete
 - defines verifiable behavior, invariants, state changes, and side effects
-- maps every intent behavior to contract commitments
-- identifies existing or required evidence for each commitment
+- maps every intent behavior to contract behaviors
+- identifies existing or required evidence for each behavior
 - stops when technical reality conflicts with approved business intent
 - excludes private implementation structure and task sequencing
 - shows the complete contract for approval before writing it
@@ -143,8 +166,24 @@ It:
 - uses TDD when it provides a useful feedback loop rather than mandating it
 - runs focused checks throughout and relevant repository checks at the end
 - stops instead of silently changing an invalid contract
-- reports commitment coverage and validation results without creating another artifact
+- reports behavior coverage and validation results without creating another artifact
 - does not review, commit, or publish the change
+
+### `/review`
+
+Independently reviews an implementation diff against its approved `contract.md` and the repository's engineering standards.
+
+It:
+
+- includes staged, unstaged, and untracked work or a supplied committed comparison
+- checks whether the implementation matches the contract and whether the code is solid in separate contexts
+- prefers parallel, isolated, read-only subagents when the harness supports them
+- falls back to sequential review while keeping the axes separate
+- traces behavior rather than trusting names or passing tests alone
+- validates findings against changed code and surrounding context
+- reports stable `CONTRACT-###` and `CODE-###` finding identifiers
+- assigns actionable severities and proposes minimal resolutions
+- does not modify code, artifacts, git state, or issue trackers
 
 ## Using the skills with Pi
 
@@ -154,7 +193,8 @@ Load the development versions directly:
 pi \
   --skill ./skills/to-intent/SKILL.md \
   --skill ./skills/to-contract/SKILL.md \
-  --skill ./skills/implement/SKILL.md
+  --skill ./skills/implement/SKILL.md \
+  --skill ./skills/review/SKILL.md
 ```
 
 Then invoke the required transition explicitly:
@@ -163,6 +203,7 @@ Then invoke the required transition explicitly:
 /skill:to-intent path/to/requirements.md
 /skill:to-contract path/to/intent.md
 /skill:implement path/to/contract.md
+/skill:review path/to/contract.md
 ```
 
 The skills use `disable-model-invocation: true`, so they will not be selected automatically.
@@ -181,8 +222,12 @@ skills/
 │   ├── SKILL.md
 │   └── references/
 │       └── CONTRACT-FORMAT.md
-└── implement/
-    └── SKILL.md
+├── implement/
+│   └── SKILL.md
+└── review/
+    ├── SKILL.md
+    └── references/
+        └── REVIEW-FORMAT.md
 ```
 
 Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.

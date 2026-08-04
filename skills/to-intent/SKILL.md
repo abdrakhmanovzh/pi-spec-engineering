@@ -12,7 +12,7 @@ In this workflow:
 
 - **Requirements** are the original business request. They are evidence of what was requested, but may be incomplete, ambiguous, contradictory, or inconsistent with the existing system.
 - **Intent** is the clarified business outcome and behavior agreed with the user through this skill.
-- **Contract** is the later technical commitment derived from the intent. Producing it is not part of this skill.
+- **Contract** is the later technical agreement derived from the intent. Producing it is not part of this skill.
 
 Read [references/INTENT-FORMAT.md](references/INTENT-FORMAT.md) before beginning.
 

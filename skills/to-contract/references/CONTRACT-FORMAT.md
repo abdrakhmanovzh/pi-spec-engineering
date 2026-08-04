@@ -27,7 +27,7 @@ Use the repository's native language or established schema notation. Include onl
 
 State validation and normalization rules that the type notation cannot express.
 
-## Commitments
+## Behaviors
 
 ### C1 — <short behavior name>
 
@@ -45,11 +45,11 @@ Repeat with stable sequential identifiers (`C2`, `C3`, ...).
 
 ## Evidence
 
-| Commitment | Evidence | Status |
+| Behavior | Evidence | Status |
 |---|---|---|
 | C1 | <test seam, check, or manual demonstration> | Existing / Required |
 
-Include invariants in the Commitment column when they require separate evidence.
+Include invariants in the Behavior column when they require separate evidence.
 
 ## Intent coverage
 
@@ -76,15 +76,15 @@ A contract is ready when:
 - inputs, outputs, and errors have concrete types where applicable
 - every concrete technical fact comes from inspected evidence or an explicit user decision
 - validation and normalization are explicit
-- observable behavior is expressed as stable commitments
+- observable behavior has stable identifiers
 - private implementation types and state are absent
 - relevant failure, retry, idempotency, ordering, and partial-success semantics are defined
 - remote operations distinguish confirmed success, confirmed rejection, and ambiguous outcomes when the protocol permits ambiguity
 - invariants and side effects are explicit
 - every intent behavior is covered or identified as outside the software boundary
-- every contract commitment is justified by intent or a necessary repository constraint
+- every contract behavior is justified by intent or a necessary repository constraint
 - evidence is identified without pretending required evidence already exists
-- commitments and invariants remain consistent under timeout, concurrency, and partial failure
-- proposed evidence can actually prove its referenced commitments
+- behaviors and invariants remain consistent under timeout, concurrency, and partial failure
+- proposed evidence can actually prove its referenced behaviors
 - no private implementation plan or speculative extension is included
 - the user has explicitly approved it

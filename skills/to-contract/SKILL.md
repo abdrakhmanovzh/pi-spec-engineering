@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # To Contract
 
-Turn the approved business intent in `intent.md` into an approved technical commitment in `contract.md`.
+Turn the approved business intent in `intent.md` into an approved technical agreement in `contract.md`.
 
 ## Artifact model
 
 - **Requirements** are the original business request in `requirements.md`.
 - **Intent** is the clarified and human-approved business outcome in `intent.md`.
-- **Contract** is the technical, verifiable commitment derived from the intent.
+- **Contract** is the technical, verifiable agreement derived from the intent.
 
 This skill transforms `intent.md` into `contract.md`. It must not modify either `requirements.md` or `intent.md`.
 
@@ -83,7 +83,7 @@ Focus on:
 - ordering, idempotency, concurrency, and retry behavior when relevant
 - confirmed success, confirmed rejection, and ambiguous outcomes for remote operations
 - compatibility constraints explicitly required by the intent or repository
-- evidence that can verify each commitment
+- evidence that can verify each behavior
 
 Do not ask the user to design internal modules, files, classes, helper functions, or implementation steps.
 
@@ -95,11 +95,11 @@ The contract must:
 
 - cover every behavior and constraint in the intent
 - define concrete inputs and outputs at affected public boundaries
-- use native types or established schema formats when they express the commitment more precisely than prose
-- distinguish existing boundaries from new or changed commitments
+- use native types or established schema formats when they express behavior more precisely than prose
+- distinguish existing boundaries from new or changed behavior
 - define relevant errors, invariants, state changes, and side effects
-- give every verifiable commitment a stable identifier
-- map every commitment to prospective automated or manual evidence
+- give every verifiable behavior a stable identifier
+- map every behavior to prospective automated or manual evidence
 - state technical exclusions explicitly
 
 The contract must not contain file-by-file edits, private implementation structure, task sequencing, estimates, or speculative extensibility. For each type, identify who outside the implementation consumes it. Remove it when there is no external consumer and it does not define an observable protocol.
@@ -110,8 +110,8 @@ Do not claim that evidence already exists unless you inspected it. Mark evidence
 
 Before presenting the draft, check both directions:
 
-- Every material statement in `intent.md` is represented by one or more contract commitments or explicitly identified as outside the software boundary.
-- Every contract commitment is justified by the intent or by a necessary repository constraint.
+- Every material statement in `intent.md` is represented by one or more contract behaviors or explicitly identified as outside the software boundary.
+- Every contract behavior is justified by the intent or by a necessary repository constraint.
 
 Then stress-test the contract:
 
@@ -119,8 +119,8 @@ Then stress-test the contract:
 - Can a side effect succeed while its response is lost?
 - Does the contract confuse actual state with client-confirmed state?
 - Do retries require idempotency?
-- Can all commitments and invariants hold under timeout, concurrency, and partial failure?
-- Does the proposed evidence genuinely prove each commitment?
+- Can all behaviors and invariants hold under timeout, concurrency, and partial failure?
+- Does the proposed evidence genuinely prove each behavior?
 - Is every concrete technical fact grounded in inspected evidence or an explicit decision?
 - Did any private implementation state leak into the contract?
 
@@ -130,7 +130,7 @@ Remove scope creep and resolve contradictions. Surface any uncovered intent inst
 
 ### 6. Confirm and write
 
-Show the complete contract draft to the user and ask whether it accurately represents the technical commitment. Incorporate corrections and repeat confirmation when meaning changes.
+Show the complete contract draft to the user and ask whether it accurately represents the technical agreement. Incorporate corrections and repeat confirmation when meaning changes.
 
 Only after explicit approval, write `contract.md` beside `intent.md` unless the user specifies another location. If `contract.md` already exists, ask before replacing it.
 
