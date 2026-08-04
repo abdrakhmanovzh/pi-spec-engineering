@@ -18,9 +18,11 @@ implementation
 reviewed implementation
     ↓ /verify
 verified change
+    ↓ /finalize
+published completion record + durable system truth
 ```
 
-Only `/to-intent` exists today. The rest describe the direction of the project, not implemented functionality.
+`/to-intent` and `/to-contract` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
 
 ## Artifact model
 
@@ -45,6 +47,45 @@ The technical and verifiable commitment derived from `intent.md`. It will define
 - Skills remain independently understandable and explicitly invoked.
 - Workflow depth should be proportional to the uncertainty and risk of a change.
 - Tests, types, and runtime checks provide executable evidence for written commitments.
+- Change artifacts have an explicit lifecycle; they are not permanent repository documentation by default.
+
+## Artifact lifecycle
+
+`requirements.md`, `intent.md`, and `contract.md` are working change artifacts. They are needed while a change is clarified, implemented, reviewed, and verified, but they should not automatically accumulate beside the source code forever.
+
+A completed change contains three kinds of information:
+
+1. **Historical reasoning** — original request, agreed intent, important scope decisions, and verification result. Publish this to the originating issue or pull request.
+2. **Current system truth** — public types, schemas, tests, API documentation, business constraints, runbooks, and rare architectural decisions. Promote these into their canonical repository locations.
+3. **Temporary working detail** — intermediate material with no continuing value. Delete it after publication and promotion are confirmed.
+
+The intended completion flow is:
+
+```text
+working artifacts
+    ↓ /verify
+completion package
+    ↓ /finalize
+├── historical reasoning → issue, pull request, or local archive
+├── current system truth → code, tests, schemas, and durable docs
+└── temporary remainder  → delete after confirmation
+```
+
+### Tracker integration
+
+The core engineering skills remain independent of GitHub, GitLab, Linear, Jira, or any other tracker. Tracker publication belongs to the planned `/finalize` skill.
+
+The first `/finalize` version should:
+
+- produce a concise, ready-to-paste Markdown completion record
+- identify durable truths that must be promoted into the repository
+- identify temporary artifacts eligible for deletion
+- ask the user where the completion record will be retained
+- never publish or delete without explicit confirmation
+
+Provider-specific automation can be added after a real workflow justifies it. Possible destinations include an originating issue, a pull request, or a local archive. Tracker configuration and adapters must remain optional; defining intent and contracts must never require them.
+
+This lifecycle has an unavoidable tradeoff: retaining complete historical reasoning requires a durable destination. If no tracker or local archive is chosen, that history is intentionally discarded after the lasting truths are promoted.
 
 ## Available skills
 
@@ -73,21 +114,41 @@ changes/order-tracking/
 
 The user may request another output location. Existing intent files are not replaced without confirmation.
 
-## Using `/to-intent` with Pi
+### `/to-contract`
 
-Load the development version directly:
+Transforms an approved `intent.md` into a separate, approved `contract.md` after inspecting the relevant codebase and resolving necessary technical decisions.
+
+It:
+
+- identifies affected public boundaries and existing conventions
+- makes input, output, and error types concrete
+- defines verifiable behavior, invariants, state changes, and side effects
+- maps every intent behavior to contract commitments
+- identifies existing or required evidence for each commitment
+- stops when technical reality conflicts with approved business intent
+- excludes private implementation structure and task sequencing
+- shows the complete contract for approval before writing it
+
+By default, `contract.md` is written beside the supplied `intent.md`.
+
+## Using the skills with Pi
+
+Load the development versions directly:
 
 ```bash
-pi --skill ./skills/to-intent/SKILL.md
+pi \
+  --skill ./skills/to-intent/SKILL.md \
+  --skill ./skills/to-contract/SKILL.md
 ```
 
-Then invoke it explicitly in the fresh session:
+Then invoke the required transition explicitly:
 
 ```text
 /skill:to-intent path/to/requirements.md
+/skill:to-contract path/to/intent.md
 ```
 
-The skill uses `disable-model-invocation: true`, so it will not be selected automatically.
+The skills use `disable-model-invocation: true`, so they will not be selected automatically.
 
 ## Development
 
@@ -95,10 +156,14 @@ Skills live under `skills/` so this repository can distribute them without coupl
 
 ```text
 skills/
-└── to-intent/
+├── to-intent/
+│   ├── SKILL.md
+│   └── references/
+│       └── INTENT-FORMAT.md
+└── to-contract/
     ├── SKILL.md
     └── references/
-        └── INTENT-FORMAT.md
+        └── CONTRACT-FORMAT.md
 ```
 
 Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.
