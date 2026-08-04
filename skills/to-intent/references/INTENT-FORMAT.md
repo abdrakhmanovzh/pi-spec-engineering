@@ -33,16 +33,6 @@ Why this change is wanted and what successful outcome it should create.
 ## Out of scope
 
 - <Explicitly excluded outcome or behavior>
-
-## Open questions
-
-### Blocking
-
-None.
-
-### Non-blocking
-
-- <Question that does not prevent the present commitment>
 ```
 
 ## Quality criteria
@@ -56,6 +46,5 @@ An intent is ready when:
 - exclusions make the scope boundary clear
 - terminology is consistent
 - no statement silently resolves a contradiction in the source
-- no blocking question remains
 - it contains no implementation design
 - the user has explicitly approved it

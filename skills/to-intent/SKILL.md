@@ -48,13 +48,23 @@ Do not perform broad codebase exploration when it cannot resolve a requirement q
 
 ### 3. Grill the user
 
-Interview the user until the intent is precise enough to become a technical contract.
+Interview the user until the intent is precise enough to become a technical contract. Walk through the decision tree in dependency order: resolve decisions that constrain later decisions first.
 
-- Ask one focused question at a time.
-- Prioritize questions whose answers could materially change scope or behavior.
+For every turn:
+
+1. Ask exactly one focused decision question.
+2. Explain briefly why the decision matters when it is not obvious.
+3. Provide your recommended answer and the reason for it.
+4. Wait for the user's answer before continuing.
+
+Maintain a private decision ledger of what is resolved, what remains open, and which later questions each answer makes unnecessary. Never ask a question that has already been answered, including a reworded version of the same question. Revisit a decision only when new information conflicts with it, and explain the conflict explicitly.
+
+- Prioritize decisions whose answers could materially change scope or behavior.
 - Use concrete scenarios rather than abstract questions.
 - Challenge vague, overloaded, or conflicting terminology.
 - Probe unhappy paths, boundaries, permissions, state changes, and partial failure when relevant.
+- If a fact can be established from `requirements.md`, referenced material, the codebase, or documentation, investigate it instead of asking the user.
+- Ask the user for decisions, not discoverable facts.
 - Do not ask the user to choose implementation details unless a real business constraint depends on them.
 - Do not invent an answer merely to complete the document.
 - Periodically summarize resolved decisions and remaining uncertainty.
@@ -67,17 +77,10 @@ Draft `intent.md` using the required format. Keep it concise. Preserve meaningfu
 
 The intent must describe what outcome and behavior are wanted. It must not prescribe modules, files, APIs, schemas, classes, database design, or implementation sequencing.
 
-Classify open questions as:
-
-- **Blocking** — implementation or contract design would require guessing.
-- **Non-blocking** — useful to resolve later, but does not affect the present commitment.
-
-Do not finalize an intent with blocking open questions.
-
 ### 5. Confirm and write
 
 Show the complete draft to the user and ask whether it accurately captures the shared intent. Incorporate corrections and repeat confirmation when meaning changes.
 
 Only after explicit approval, write `intent.md` beside `requirements.md` unless the user specifies another location. If `intent.md` already exists, ask before replacing it.
 
-Report the written path and any non-blocking open questions. Do not create a technical contract, implementation plan, tickets, ADRs, or code as part of this skill.
+Report the written path. Do not create a technical contract, implementation plan, tickets, ADRs, or code as part of this skill.
