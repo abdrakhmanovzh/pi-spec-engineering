@@ -211,7 +211,8 @@ It:
 - maps intent behaviors and scenarios to contract behavior and observable evidence
 - runs end-to-end, integration, public-interface, schema, build, or manual evidence as appropriate
 - does not confuse passing commands with proof of the intended outcome
-- routes translation failures to `/to-contract` and implementation failures through `/fix-review` and `/review`
+- reports contract mismatches for the user to reconsider with `/to-contract`
+- reports implementation failures and recommends `/fix-review`, followed by `/review`
 - prefers one isolated, read-only verification subagent when available
 - produces a completion package for `/finalize` on success
 - does not fix, publish, delete, or commit anything

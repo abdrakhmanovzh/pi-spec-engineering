@@ -35,7 +35,7 @@ When subagents are unavailable, perform the same work in the primary session. In
 
 ## Process
 
-### 1. Check the translation
+### 1. Check that the contract matches the intent
 
 Compare the approved intent with the technical contract.
 
@@ -46,7 +46,7 @@ Confirm that:
 - technical behavior not present in the intent is necessary to deliver it rather than added product scope
 - outcomes outside the software boundary are identified honestly
 
-If the contract mistranslates or omits intent, stop and return the issue to `/to-contract`. Do not reinterpret either artifact.
+If the contract omits, changes, or contradicts the intent, stop and report a contract mismatch. State exactly what must be reconsidered with `/to-contract`; do not invoke it or change either artifact automatically, because revising the contract requires user approval.
 
 ### 2. Build the verification map
 
@@ -77,8 +77,8 @@ Do not claim business metrics outside the software boundary, such as reduced sup
 
 Assign stable `VERIFY-###` identifiers to failures and route them by cause:
 
-- **Intent-to-contract problem:** return to `/to-contract`.
-- **Implementation or missing-evidence problem:** return to `/fix-review`, then `/review` again.
+- **Contract mismatch:** state what must be reconsidered with `/to-contract` and wait for the user.
+- **Implementation or missing-evidence problem:** state that `/fix-review` and then `/review` are required.
 - **Unavailable environment or external dependency:** mark blocked and state what is needed.
 
 Do not fix code, modify artifacts, or weaken acceptance criteria during verification.

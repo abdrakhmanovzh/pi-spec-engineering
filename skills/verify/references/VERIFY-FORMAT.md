@@ -15,11 +15,11 @@ Use this structure and keep evidence concrete.
 
 ### VERIFY-001 — <short title>
 
-- **Cause:** Intent-to-contract | Implementation | Evidence | Environment
+- **Cause:** Contract mismatch | Implementation | Evidence | Environment
 - **Intent:** <affected intent behavior or scenario>
 - **Contract:** <affected behavior or invariant identifiers>
 - **Problem:** <what could not be demonstrated>
-- **Route:** `/to-contract` | `/fix-review` then `/review` | environment action required
+- **Next action:** reconsider with `/to-contract` after user approval | run `/fix-review` then `/review` | provide the required environment
 
 If there are no failures: `No verification failures.`
 
