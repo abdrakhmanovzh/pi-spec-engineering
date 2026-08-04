@@ -6,21 +6,28 @@ The repository is intentionally built as a collection of independent agent skill
 
 ## Workflow
 
-```text
-requirements.md
-    ↓ /to-intent
-intent.md
-    ↓ /to-contract
-contract.md
-    ↓ /implement
-implementation
-    ↓ /review ⇄ /fix-review
-reviewed implementation
-    ↓ /verify
-verified change
-    ↓ /finalize
-published completion record + durable system truth
+```mermaid
+flowchart TD
+    R[requirements.md] --> TI["/to-intent"]
+    TI --> I[intent.md]
+    I --> TC["/to-contract"]
+    TC --> C[contract.md]
+    C --> IM["/implement"]
+    IM --> RV["/review"]
+
+    RV -->|Changes required| FR["/fix-review"]
+    FR --> RV
+
+    RV -->|Pass| V["/verify"]
+    V -->|Implementation or evidence failure| FR
+    V -->|Contract mismatch| D{Reconsider contract?}
+    D -->|User approves| TC
+    D -->|No| STOP[Stop]
+    V -->|Pass| F["/finalize"]
+    F --> DONE[Completion record, durable truth, and approved cleanup]
 ```
+
+Arrows between skills show the recommended next step, not automatic invocation. Each skill reports and waits for the user.
 
 Every stage in the workflow exists today.
 
@@ -61,14 +68,21 @@ A completed change contains three kinds of information:
 
 The intended completion flow is:
 
-```text
-working artifacts
-    ↓ /verify
-completion package
-    ↓ /finalize
-├── historical reasoning → issue, pull request, or local archive
-├── current system truth → code, tests, schemas, and durable docs
-└── temporary remainder  → delete after confirmation
+```mermaid
+flowchart TD
+    W[Working artifacts] --> V["/verify"]
+    V --> P[Completion package]
+    P --> F["/finalize"]
+
+    F --> H[Historical reasoning]
+    F --> T[Current system truth]
+    F --> X[Temporary remainder]
+
+    H --> DEST[Issue, pull request, or local archive]
+    T --> DURABLE[Code, tests, schemas, and durable docs]
+    X --> APPROVAL{User approves exact files?}
+    APPROVAL -->|Yes| DELETE[Delete approved files]
+    APPROVAL -->|No| KEEP[Keep files]
 ```
 
 ### Tracker integration
@@ -168,6 +182,23 @@ It:
 - stops instead of silently changing an invalid contract
 - reports behavior coverage and validation results without creating another artifact
 - does not review, commit, or publish the change
+
+### Review and verification
+
+These stages answer different questions:
+
+```mermaid
+flowchart LR
+    I[intent.md] --> V["/verify"]
+    C[contract.md] --> R["/review"]
+    C --> V
+    CODE[Implementation] --> R
+    CODE --> V
+
+    R --> MATCH[Does the code match the contract?]
+    R --> QUALITY[Is the code solid?]
+    V --> OUTCOME[Does the working system deliver the intent?]
+```
 
 ### `/review`
 
