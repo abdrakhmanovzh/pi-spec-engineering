@@ -8,8 +8,6 @@ The repository is intentionally built as a collection of independent agent skill
 
 ![Hand-drawn workflow diagram](docs/diagrams/workflow.svg)
 
-[Edit the tldraw source](docs/diagrams/workflow.tldraw).
-
 Arrows between skills show the recommended next step, not automatic invocation. Each skill reports and waits for the user.
 
 Every stage in the workflow exists today.
@@ -52,8 +50,6 @@ A completed change contains three kinds of information:
 The intended completion flow is:
 
 ![Hand-drawn artifact lifecycle diagram](docs/diagrams/artifact-lifecycle.svg)
-
-[Edit the tldraw source](docs/diagrams/artifact-lifecycle.tldraw).
 
 ### Tracker integration
 
@@ -159,8 +155,6 @@ These stages answer different questions:
 
 ![Hand-drawn comparison of review and verification](docs/diagrams/review-vs-verify.svg)
 
-[Edit the tldraw source](docs/diagrams/review-vs-verify.tldraw).
-
 ### `/review`
 
 Independently reviews an implementation diff against its approved `contract.md` and the repository's engineering standards.
@@ -229,20 +223,21 @@ It:
 
 ## Using the skills with Pi
 
-Load the development versions directly:
+Install the repository directly from GitHub over SSH:
 
 ```bash
-pi \
-  --skill ./skills/to-intent/SKILL.md \
-  --skill ./skills/to-contract/SKILL.md \
-  --skill ./skills/implement/SKILL.md \
-  --skill ./skills/review/SKILL.md \
-  --skill ./skills/fix-review/SKILL.md \
-  --skill ./skills/verify/SKILL.md \
-  --skill ./skills/finalize/SKILL.md
+pi install git:git@github.com:abdrakhmanovzh/pi-spec-engineering
 ```
 
-Then invoke the required transition explicitly:
+Or use HTTPS:
+
+```bash
+pi install git:github.com/abdrakhmanovzh/pi-spec-engineering
+```
+
+Pi discovers every skill under `skills/`; no npm package or extension code is required. For local development without installation, run `pi -e .` from the repository root.
+
+Invoke each transition explicitly:
 
 ```text
 /skill:to-intent path/to/requirements.md
