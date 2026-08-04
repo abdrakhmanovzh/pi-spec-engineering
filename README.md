@@ -22,7 +22,7 @@ verified change
 published completion record + durable system truth
 ```
 
-Every stage through `/verify` exists today. `/finalize` describes the next planned stage, not implemented functionality.
+Every stage in the workflow exists today.
 
 ## Artifact model
 
@@ -73,9 +73,9 @@ completion package
 
 ### Tracker integration
 
-The core engineering skills remain independent of GitHub, GitLab, Linear, Jira, or any other tracker. Tracker publication belongs to the planned `/finalize` skill.
+The core engineering skills remain independent of GitHub, GitLab, Linear, Jira, or any other tracker. The current `/finalize` skill prepares a manual completion record; it does not publish to remote trackers.
 
-The first `/finalize` version should:
+`/finalize`:
 
 - produce a concise, ready-to-paste Markdown completion record
 - identify durable truths that must be promoted into the repository
@@ -196,9 +196,9 @@ It:
 - fixes accepted findings in dependency and severity order
 - adds evidence when a finding exposed a coverage gap
 - rejects incorrect findings only with concrete repository evidence
-- returns contract problems to `/to-contract` rather than changing expected behavior
+- reports contract problems for the user to reconsider with `/to-contract`
 - reports every original finding ID exactly once
-- returns the result to `/review` without committing or declaring verification
+- recommends another `/review` without committing or declaring verification
 
 ### `/verify`
 
@@ -217,6 +217,21 @@ It:
 - produces a completion package for `/finalize` on success
 - does not fix, publish, delete, or commit anything
 
+### `/finalize`
+
+Retains useful history from a verified change, confirms that lasting system truth lives in canonical repository locations, and removes temporary workflow artifacts only with explicit approval.
+
+It:
+
+- requires a passing verification report
+- prepares a concise completion record for an issue, pull request, or local archive
+- asks the user where history will be retained or whether its loss is intentional
+- blocks cleanup when lasting truth exists only in temporary artifacts
+- lists exact cleanup candidates and never uses wildcard deletion
+- waits for confirmation that history was retained before proposing cleanup
+- deletes only explicitly approved files
+- does not publish to remote trackers, commit, or push
+
 ## Using the skills with Pi
 
 Load the development versions directly:
@@ -228,7 +243,8 @@ pi \
   --skill ./skills/implement/SKILL.md \
   --skill ./skills/review/SKILL.md \
   --skill ./skills/fix-review/SKILL.md \
-  --skill ./skills/verify/SKILL.md
+  --skill ./skills/verify/SKILL.md \
+  --skill ./skills/finalize/SKILL.md
 ```
 
 Then invoke the required transition explicitly:
@@ -240,6 +256,7 @@ Then invoke the required transition explicitly:
 /skill:review path/to/contract.md
 /skill:fix-review path/to/contract.md
 /skill:verify path/to/intent.md path/to/contract.md
+/skill:finalize
 ```
 
 The skills use `disable-model-invocation: true`, so they will not be selected automatically.
@@ -266,10 +283,14 @@ skills/
 │       └── REVIEW-FORMAT.md
 ├── fix-review/
 │   └── SKILL.md
-└── verify/
+├── verify/
+│   ├── SKILL.md
+│   └── references/
+│       └── VERIFY-FORMAT.md
+└── finalize/
     ├── SKILL.md
     └── references/
-        └── VERIFY-FORMAT.md
+        └── COMPLETION-FORMAT.md
 ```
 
-Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.
+Evaluate skills with realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.

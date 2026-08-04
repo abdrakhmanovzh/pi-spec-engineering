@@ -36,7 +36,7 @@ Do not blindly accept every finding. For each one, determine whether it is:
 
 Explain rejected and blocked findings with concrete evidence. Never reject a finding merely because the fix is inconvenient.
 
-If a finding exposes a bad or incomplete contract, mark it blocked and return the decision to `/to-contract`. Do not silently redefine expected behavior in code.
+If a finding exposes a bad or incomplete contract, mark it blocked and report what must be reconsidered with `/to-contract`. Wait for the user; do not silently redefine expected behavior in code.
 
 ### 2. Plan the fix order
 
@@ -86,4 +86,4 @@ Ready for review | Blocked
 
 Omit empty status sections. Report **Ready for review** only when all accepted findings are fixed with evidence and no finding is blocked.
 
-Do not modify `contract.md`, commit changes, publish results, close findings permanently, or declare the implementation verified. Return the changed implementation and resolution report to `/review` for an independent pass.
+Do not modify `contract.md`, commit changes, publish results, close findings permanently, or declare the implementation verified. Recommend running `/review` again with the changed implementation and resolution report.

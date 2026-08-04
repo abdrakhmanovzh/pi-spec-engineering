@@ -24,7 +24,7 @@ The user must supply an `intent.md`. If its path is not provided, ask for it.
 
 Read it completely and treat it as the authoritative source of desired business behavior.
 
-The intent must be a self-contained handoff. Do not read `requirements.md` to supplement or reinterpret it. If the intent is incomplete, contradictory, or too ambiguous to contract without guessing, stop and return the issue to `/to-intent`.
+The intent must be a self-contained handoff. Do not read `requirements.md` to supplement or reinterpret it. If the intent is incomplete, contradictory, or too ambiguous to contract without guessing, stop and report what must be clarified with `/to-intent`. Wait for the user rather than changing the intent.
 
 ## Process
 

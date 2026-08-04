@@ -34,7 +34,7 @@ Before editing, confirm that:
 - behaviors and evidence do not contradict each other
 - the repository is consistent with the contract's claims about existing behavior
 
-If the contract is incomplete, contradictory, impossible, or inconsistent with the repository, stop and explain what must return to `/to-contract`. Do not repair the contract or infer replacement behavior.
+If the contract is incomplete, contradictory, impossible, or inconsistent with the repository, stop and report what must be reconsidered with `/to-contract`. Wait for the user; do not repair the contract or infer replacement behavior.
 
 ### 2. Establish the baseline
 
