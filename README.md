@@ -22,7 +22,7 @@ verified change
 published completion record + durable system truth
 ```
 
-`/to-intent`, `/to-contract`, `/implement`, and `/review` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
+`/to-intent`, `/to-contract`, `/implement`, `/review`, and `/fix-review` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
 
 ## Artifact model
 
@@ -185,6 +185,21 @@ It:
 - assigns actionable severities and proposes minimal resolutions
 - does not modify code, artifacts, git state, or issue trackers
 
+### `/fix-review`
+
+Consumes the latest structured review findings and makes focused, contract-preserving corrections.
+
+It:
+
+- validates findings instead of obeying them blindly
+- classifies every finding as accepted, rejected, or blocked
+- fixes accepted findings in dependency and severity order
+- adds evidence when a finding exposed a coverage gap
+- rejects incorrect findings only with concrete repository evidence
+- returns contract problems to `/to-contract` rather than changing expected behavior
+- reports every original finding ID exactly once
+- returns the result to `/review` without committing or declaring verification
+
 ## Using the skills with Pi
 
 Load the development versions directly:
@@ -194,7 +209,8 @@ pi \
   --skill ./skills/to-intent/SKILL.md \
   --skill ./skills/to-contract/SKILL.md \
   --skill ./skills/implement/SKILL.md \
-  --skill ./skills/review/SKILL.md
+  --skill ./skills/review/SKILL.md \
+  --skill ./skills/fix-review/SKILL.md
 ```
 
 Then invoke the required transition explicitly:
@@ -204,6 +220,7 @@ Then invoke the required transition explicitly:
 /skill:to-contract path/to/intent.md
 /skill:implement path/to/contract.md
 /skill:review path/to/contract.md
+/skill:fix-review path/to/contract.md
 ```
 
 The skills use `disable-model-invocation: true`, so they will not be selected automatically.
@@ -224,10 +241,12 @@ skills/
 │       └── CONTRACT-FORMAT.md
 ├── implement/
 │   └── SKILL.md
-└── review/
-    ├── SKILL.md
-    └── references/
-        └── REVIEW-FORMAT.md
+├── review/
+│   ├── SKILL.md
+│   └── references/
+│       └── REVIEW-FORMAT.md
+└── fix-review/
+    └── SKILL.md
 ```
 
 Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.
