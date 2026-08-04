@@ -22,7 +22,7 @@ verified change
 published completion record + durable system truth
 ```
 
-`/to-intent`, `/to-contract`, `/implement`, `/review`, and `/fix-review` exist today. The remaining stages, including `/finalize`, describe the direction of the project, not implemented functionality.
+Every stage through `/verify` exists today. `/finalize` describes the next planned stage, not implemented functionality.
 
 ## Artifact model
 
@@ -200,6 +200,22 @@ It:
 - reports every original finding ID exactly once
 - returns the result to `/review` without committing or declaring verification
 
+### `/verify`
+
+Independently demonstrates that the reviewed working system delivers the approved `intent.md` through the behavior defined in `contract.md`.
+
+It:
+
+- requires the latest review to have no required changes
+- checks that the contract preserves the approved intent
+- maps intent behaviors and scenarios to contract behavior and observable evidence
+- runs end-to-end, integration, public-interface, schema, build, or manual evidence as appropriate
+- does not confuse passing commands with proof of the intended outcome
+- routes translation failures to `/to-contract` and implementation failures through `/fix-review` and `/review`
+- prefers one isolated, read-only verification subagent when available
+- produces a completion package for `/finalize` on success
+- does not fix, publish, delete, or commit anything
+
 ## Using the skills with Pi
 
 Load the development versions directly:
@@ -210,7 +226,8 @@ pi \
   --skill ./skills/to-contract/SKILL.md \
   --skill ./skills/implement/SKILL.md \
   --skill ./skills/review/SKILL.md \
-  --skill ./skills/fix-review/SKILL.md
+  --skill ./skills/fix-review/SKILL.md \
+  --skill ./skills/verify/SKILL.md
 ```
 
 Then invoke the required transition explicitly:
@@ -221,6 +238,7 @@ Then invoke the required transition explicitly:
 /skill:implement path/to/contract.md
 /skill:review path/to/contract.md
 /skill:fix-review path/to/contract.md
+/skill:verify path/to/intent.md path/to/contract.md
 ```
 
 The skills use `disable-model-invocation: true`, so they will not be selected automatically.
@@ -245,8 +263,12 @@ skills/
 │   ├── SKILL.md
 │   └── references/
 │       └── REVIEW-FORMAT.md
-└── fix-review/
-    └── SKILL.md
+├── fix-review/
+│   └── SKILL.md
+└── verify/
+    ├── SKILL.md
+    └── references/
+        └── VERIFY-FORMAT.md
 ```
 
 Evaluate skills in fresh sessions using realistic, imperfect inputs. Judge behavior and artifact quality rather than exact wording.
