@@ -1,24 +1,24 @@
 ---
 name: fix-review
-description: Resolve structured CONTRACT-### and CODE-### review findings with focused code changes and validation. Use after review reports changes required.
+description: Resolve structured CONTRACT-###, CODE-###, and fixable VERIFY-### implementation or evidence findings with focused code changes and validation.
 disable-model-invocation: true
 ---
 
 # Fix Review
 
-Resolve findings from `/review` without changing the approved contract.
+Resolve findings from `/review` or fixable implementation and evidence failures from `/verify` without changing the approved contract.
 
 ## Artifact model
 
 - **Contract** is the approved technical agreement.
-- **Review findings** identify contract or code problems by stable ID.
+- **Findings** identify contract, code, implementation, or evidence problems by stable ID.
 - **Fix Review** changes the implementation and records how each finding was resolved.
 
-This skill uses `contract.md`, the reviewed implementation, and the latest review report. Do not read `intent.md` or `requirements.md` to reinterpret the contract.
+This skill uses `contract.md`, the implementation, and the latest review or verification report. Do not read `intent.md` or `requirements.md` to reinterpret the contract.
 
 ## Input
 
-Use the review report already present in the conversation or a report supplied by the user. The report must contain stable `CONTRACT-###` or `CODE-###` finding IDs.
+Use the latest review or verification report already present in the conversation, or a report supplied by the user. It must contain stable `CONTRACT-###`, `CODE-###`, or `VERIFY-###` finding IDs. Accept `VERIFY-###` findings only when their cause is Implementation or Evidence; contract mismatches and environment blocks cannot be fixed here.
 
 Use the same `contract.md` and implementation comparison established by `/review`. Ask for either when it is unavailable or ambiguous.
 
@@ -74,6 +74,7 @@ Report every original finding ID exactly once under one status:
 ## Blocked
 
 - **CONTRACT-003:** <decision or dependency required>
+- **VERIFY-004:** <environment or other blocker>
 
 ## Validation
 

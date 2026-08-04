@@ -5,9 +5,18 @@ Use this structure and keep evidence concrete.
 ```markdown
 # Verification
 
+## Verified state
+
+- **Contract:** `<path>` — SHA-256: `<hash>`
+- **Base:** `<full revision ID>`
+- **Target:** `<full revision ID or "working tree">`
+- **Implementation manifest:** Matches passing review | Does not match
+
+The changed-path set and every path's status, mode, and content hash must match the passing review report.
+
 ## Intent verification
 
-| Intent behavior or scenario | Contract coverage | Evidence | Result |
+| Intent behavior, scenario, rule, or constraint | Contract coverage | Evidence | Result |
 |---|---|---|---|
 | <intent item> | B1, I1 | `<command>` or manual procedure and observed result | Pass / Fail / Blocked |
 
@@ -16,7 +25,7 @@ Use this structure and keep evidence concrete.
 ### VERIFY-001 — <short title>
 
 - **Cause:** Contract mismatch | Implementation | Evidence | Environment
-- **Intent:** <affected intent behavior or scenario>
+- **Intent:** <affected behavior, scenario, business rule, or constraint>
 - **Contract:** <affected behavior or invariant identifiers>
 - **Problem:** <what could not be demonstrated>
 - **Next action:** reconsider with `/to-contract` after user approval | run `/fix-review` then `/review` | provide the required environment

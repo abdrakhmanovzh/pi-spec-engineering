@@ -182,15 +182,18 @@ It:
 - traces behavior rather than trusting names or passing tests alone
 - validates findings against changed code and surrounding context
 - reports stable `CONTRACT-###` and `CODE-###` finding identifiers
+- records the contract hash and an exact manifest of reviewed files
+- passes only when there are no findings
 - assigns actionable severities and proposes minimal resolutions
 - does not modify code, artifacts, git state, or issue trackers
 
 ### `/fix-review`
 
-Consumes the latest structured review findings and makes focused, contract-preserving corrections.
+Consumes structured review findings or fixable verification failures and makes focused, contract-preserving corrections.
 
 It:
 
+- accepts review findings and implementation- or evidence-related `VERIFY-###` failures
 - validates findings instead of obeying them blindly
 - classifies every finding as accepted, rejected, or blocked
 - fixes accepted findings in dependency and severity order
@@ -206,9 +209,9 @@ Independently demonstrates that the reviewed working system delivers the approve
 
 It:
 
-- requires the latest review to have no required changes
+- requires a passing review and confirms its contract hash and reviewed-file manifest still match
 - checks that the contract preserves the approved intent
-- maps intent behaviors and scenarios to contract behavior and observable evidence
+- maps intent behaviors, scenarios, business rules, and constraints to contract behavior and observable evidence
 - runs end-to-end, integration, public-interface, schema, build, or manual evidence as appropriate
 - does not confuse passing commands with proof of the intended outcome
 - reports contract mismatches for the user to reconsider with `/to-contract`
@@ -223,7 +226,7 @@ Retains useful history from a verified change, confirms that lasting system trut
 
 It:
 
-- requires a passing verification report
+- requires passing review and verification reports for the current repository state
 - prepares a concise completion record for an issue, pull request, or local archive
 - asks the user where history will be retained or whether its loss is intentional
 - blocks cleanup when lasting truth exists only in temporary artifacts

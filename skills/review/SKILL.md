@@ -30,17 +30,21 @@ Determine the implementation diff:
 
 Read the contract, repository instructions, complete diff, changed files, and enough surrounding code and tests to evaluate behavior accurately.
 
+Create one exact review patch containing every in-scope staged, unstaged, untracked, or committed change. Give both reviewers this same patch.
+
+Record a reproducible reviewed-state manifest: the full base revision, full target revision or `working tree`, and every changed path in sorted order with its status, file mode, and SHA-256 of its current bytes. Use `DELETED` instead of a hash for deleted paths. The manifest path set must exactly match the patch. Record the contract path and SHA-256 separately.
+
 ## Process
 
 ### 1. Validate the review target
 
-Confirm that the contract is readable, the comparison point resolves when applicable, and the implementation diff is non-empty. Report and stop when there is nothing reliable to review.
+Confirm that the contract is readable, the comparison point resolves when applicable, and the implementation diff is non-empty. Confirm that the review patch includes untracked in-scope files. Report and stop when there is nothing reliable to review.
 
 Treat repository-generated files and unrelated pre-existing failures separately from implementation changes.
 
 ### 2. Run independent review axes
 
-When the harness supports subagents, run Contract Review and Code Review in parallel, isolated, read-only subagents. Give each the contract, exact diff definition, repository instructions, and its check instructions below. Neither reviewer may modify files or see the other review before reporting.
+When the harness supports subagents, run Contract Review and Code Review in parallel, isolated, read-only subagents. Give each the contract, exact review patch, reviewed-state manifest, repository instructions, and its check instructions below. Neither reviewer may modify files or see the other review before reporting.
 
 When subagents are unavailable, review the axes sequentially and keep their analysis and findings separate. Subagents improve independence but are not required for this skill to work.
 
@@ -108,7 +112,6 @@ Order findings by severity within each axis, but never merge the axes into one r
 End with counts by axis and severity plus a clear review result:
 
 - **Pass:** no findings.
-- **Pass with follow-up:** only accepted low-severity work may remain.
-- **Changes required:** any unresolved blocking, high, or medium finding exists.
+- **Changes required:** one or more findings exist.
 
 Do not modify code, tests, the contract, git state, or issue trackers as part of this skill.

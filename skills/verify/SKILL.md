@@ -23,7 +23,9 @@ Read [references/VERIFY-FORMAT.md](references/VERIFY-FORMAT.md) before beginning
 
 The user must supply both `intent.md` and `contract.md`. Ask for either path when missing.
 
-Use the final implementation and latest `/review` report from the current repository and conversation, or ask the user to supply the review report when unavailable. Do not proceed while the latest review result is **Changes required**.
+Use the final implementation and latest `/review` report from the current repository and conversation, or ask the user to supply the review report when unavailable. Proceed only when the review result is **Pass**.
+
+Recreate the comparison described in the review report. Confirm that its complete changed-path set matches the reviewed-state manifest, including untracked files, and that every listed path still has the recorded status, mode, and SHA-256 of its current bytes. Confirm the current contract SHA-256 too. If anything differs, stop and recommend another `/review`; the passing review does not cover the current state.
 
 Read the complete intent and contract, repository instructions, relevant tests and public boundaries, and the commands needed to exercise the finished behavior.
 
@@ -41,7 +43,7 @@ Compare the approved intent with the technical contract.
 
 Confirm that:
 
-- every agreed behavior, business rule, scenario, and exclusion is represented
+- every agreed behavior, scenario, business rule, constraint, and exclusion is represented
 - the contract does not narrow or alter business meaning
 - technical behavior not present in the intent is necessary to deliver it rather than added product scope
 - outcomes outside the software boundary are identified honestly
@@ -50,7 +52,7 @@ If the contract omits, changes, or contradicts the intent, stop and report a con
 
 ### 2. Build the verification map
 
-For every intent behavior and scenario, identify:
+For every software-verifiable intent behavior, scenario, business rule, and constraint, identify:
 
 - the contract behaviors and invariants that realize it
 - the observable boundary where it can be demonstrated
@@ -64,7 +66,7 @@ Passing commands alone are insufficient when they do not exercise the intended o
 
 Run the relevant verification commands and demonstrations against the final implementation.
 
-For each intent item, record:
+For each software-verifiable intent item, record:
 
 - exact evidence used
 - command or procedure
@@ -85,7 +87,7 @@ Do not fix code, modify artifacts, or weaken acceptance criteria during verifica
 
 ### 5. Report
 
-Use the required verification format. Report every intent behavior and scenario, including those outside the software boundary.
+Use the required verification format. Report every intent behavior, scenario, business rule, and constraint, including those outside the software boundary.
 
 The result is:
 

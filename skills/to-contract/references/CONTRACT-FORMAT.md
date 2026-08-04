@@ -16,20 +16,17 @@ A concise statement of the exact capability this implementation commits to deliv
 - **Kind:** API | command | event | user interface | job | library interface | other
 - **Status:** existing | changed | new
 - **Responsibility:** <what is observable at this boundary>
+- **Input:** <exact public type or "None">
+- **Output:** <exact public type or "None">
+- **Errors:** <exact observable error type or "None">
 
-## Types
+Use the repository's native language or established schema notation for each type. State validation and normalization rules that the notation cannot express. Include only types that cross this boundary or define its externally observable protocol; omit private UI and implementation state.
 
-Use the repository's native language or established schema notation. Include only types that cross a public boundary or define an externally observable protocol. Do not include private UI or implementation state.
-
-```text
-<exact input, output, error, event, or state type>
-```
-
-State validation and normalization rules that the type notation cannot express.
+Repeat for every affected boundary. Name shared types explicitly where they are reused.
 
 ## Behaviors
 
-### C1 — <short behavior name>
+### B1 — <short behavior name>
 
 - **Given:** <relevant starting state or input>
 - **When:** <operation or event>
@@ -37,7 +34,7 @@ State validation and normalization rules that the type notation cannot express.
 - **Errors:** <observable failure behavior, or "None specific">
 - **Side effects:** <observable effects and ordering, or "None">
 
-Repeat with stable sequential identifiers (`C2`, `C3`, ...).
+Repeat with stable sequential identifiers (`B2`, `B3`, ...).
 
 ## Invariants
 
@@ -47,7 +44,7 @@ Repeat with stable sequential identifiers (`C2`, `C3`, ...).
 
 | Behavior | Evidence | Status |
 |---|---|---|
-| C1 | <test seam, check, or manual demonstration> | Existing / Required |
+| B1 | <test seam, check, or manual demonstration> | Existing / Required |
 
 Include invariants in the Behavior column when they require separate evidence.
 
@@ -55,7 +52,7 @@ Include invariants in the Behavior column when they require separate evidence.
 
 | Intent section or item | Contract coverage |
 |---|---|
-| <intent behavior or constraint> | C1, I1 |
+| <intent behavior or constraint> | B1, I1 |
 
 Mark outcomes outside the software boundary explicitly and explain why they cannot be guaranteed by implementation.
 

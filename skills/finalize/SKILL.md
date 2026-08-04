@@ -20,7 +20,9 @@ Read [references/COMPLETION-FORMAT.md](references/COMPLETION-FORMAT.md) before b
 
 Use the latest `/verify` report and completion package from the conversation or a report supplied by the user. Do not proceed unless its result is **Pass**.
 
-Use the latest passing `/review` report when available. Identify the exact working artifact paths from the conversation or ask the user for them. Never infer cleanup targets from filenames alone.
+Require the latest passing `/review` report from the conversation or user. Confirm that its contract hash and reviewed-state manifest match the passing verification report and the current repository state. If they differ, stop; review and verification do not cover the current change.
+
+Identify the exact working artifact paths from the conversation or ask the user for them. Never infer cleanup targets from filenames alone.
 
 ## Process
 

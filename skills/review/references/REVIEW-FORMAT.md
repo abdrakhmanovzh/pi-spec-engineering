@@ -5,6 +5,18 @@ Report findings in this structure. Omit empty severity groupings and keep each f
 ```markdown
 # Review
 
+## Reviewed state
+
+- **Contract:** `<path>` — SHA-256: `<hash>`
+- **Base:** `<full revision ID>`
+- **Target:** `<full revision ID or "working tree">`
+
+| Path | Status | Mode | SHA-256 |
+|---|---|---|---|
+| `<repository-relative path>` | Added / Modified / Deleted | `<file mode>` | `<hash or DELETED>` |
+
+List every path in the exact review patch, including untracked files, sorted by repository-relative path. The path set, status, mode, and hash of current file bytes define the reviewed implementation state.
+
 ## Contract review
 
 ### CONTRACT-001 — <severity>: <short finding title>
@@ -32,7 +44,7 @@ If there are no findings: `No code findings.`
 
 - **Contract review:** <counts by severity>
 - **Code review:** <counts by severity>
-- **Result:** Pass | Pass with follow-up | Changes required
+- **Result:** Pass | Changes required
 ```
 
 ## Finding criteria
